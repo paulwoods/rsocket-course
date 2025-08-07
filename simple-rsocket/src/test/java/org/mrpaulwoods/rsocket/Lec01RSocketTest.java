@@ -6,6 +6,7 @@ import io.rsocket.core.RSocketConnector;
 import io.rsocket.transport.netty.client.TcpClientTransport;
 import io.rsocket.util.DefaultPayload;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import reactor.test.StepVerifier;
@@ -27,13 +28,20 @@ public class Lec01RSocketTest {
     public void fireAndForget() {
         Payload payload = DefaultPayload.create("Hello World!");
 
-//        Mono<Void> mono = this.rSocket.fireAndForget(payload);
-//        StepVerifier.create(mono)
-//                .verifyComplete();
+        this.rSocket.fireAndForget(payload)
+                .as(StepVerifier::create)
+                .verifyComplete();
+    }
+
+    @RepeatedTest(3)
+    public void fireAndForget3() {
+        Payload payload = DefaultPayload.create("Hello World!");
 
         this.rSocket.fireAndForget(payload)
                 .as(StepVerifier::create)
                 .verifyComplete();
+
+        // shows that we only get 1 connection even if we run the test 3 times.
     }
 
 }
