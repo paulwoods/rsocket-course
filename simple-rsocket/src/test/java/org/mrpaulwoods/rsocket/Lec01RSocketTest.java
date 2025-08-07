@@ -44,4 +44,16 @@ public class Lec01RSocketTest {
                 .verifyComplete();
     }
 
+    @Test
+    public void requestStream() {
+        Payload payload = ObjectUtil.toPayload(new RequestDto(5));
+        this.rSocket.requestStream(payload)
+                .map(p -> ObjectUtil.toObject(p, ResponseDto.class))
+                .doOnNext(System.out::println)
+                .take(4)
+                .as(StepVerifier::create)
+                .expectNextCount(4)
+                .verifyComplete();
+    }
+
 }
