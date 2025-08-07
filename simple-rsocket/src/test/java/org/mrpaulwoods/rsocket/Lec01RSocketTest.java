@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mrpaulwoods.rsocket.dto.RequestDto;
+import org.mrpaulwoods.rsocket.dto.ResponseDto;
 import org.mrpaulwoods.rsocket.util.ObjectUtil;
 import reactor.test.StepVerifier;
 
@@ -29,6 +30,17 @@ public class Lec01RSocketTest {
         Payload payload = ObjectUtil.toPayload(new RequestDto(5));
         this.rSocket.fireAndForget(payload)
                 .as(StepVerifier::create)
+                .verifyComplete();
+    }
+
+    @Test
+    public void requestResponse() {
+        Payload payload = ObjectUtil.toPayload(new RequestDto(5));
+        this.rSocket.requestResponse(payload)
+                .map(p -> ObjectUtil.toObject(p, ResponseDto.class))
+                .doOnNext(System.out::println)
+                .as(StepVerifier::create)
+                .expectNextCount(1)
                 .verifyComplete();
     }
 
