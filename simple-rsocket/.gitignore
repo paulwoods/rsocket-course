@@ -1,7 +1,1 @@
-/target/classes/archetype-resources/src/main/java/App.java
-/target/classes/archetype-resources/src/test/java/AppTest.java
-/target/classes/archetype-resources/pom.xml
-/target/classes/META-INF/maven/archetype.xml
-/target/classes/org/mrpaulwoods/rsocket/service/MathService.class
-/target/classes/org/mrpaulwoods/rsocket/service/SocketAcceptorImpl.class
-/target/classes/org/mrpaulwoods/rsocket/Server.class
+/target/
