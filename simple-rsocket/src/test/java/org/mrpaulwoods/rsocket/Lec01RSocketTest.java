@@ -7,10 +7,14 @@ import io.rsocket.transport.netty.client.TcpClientTransport;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.mrpaulwoods.rsocket.dto.ChartResponseDto;
 import org.mrpaulwoods.rsocket.dto.RequestDto;
 import org.mrpaulwoods.rsocket.dto.ResponseDto;
 import org.mrpaulwoods.rsocket.util.ObjectUtil;
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
+
+import java.time.Duration;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class Lec01RSocketTest {
@@ -53,6 +57,23 @@ public class Lec01RSocketTest {
                 .take(4)
                 .as(StepVerifier::create)
                 .expectNextCount(4)
+                .verifyComplete();
+    }
+
+    @Test
+    public void requestChannel() {
+
+        Flux<Payload> payloadFlux = Flux.range(-10, 21)
+                .delayElements(Duration.ofMillis(500))
+                .map(RequestDto::new)
+                .map(ObjectUtil::toPayload);
+
+        Flux<ChartResponseDto> flux = this.rSocket.requestChannel(payloadFlux)
+                .map(p -> ObjectUtil.toObject(p, ChartResponseDto.class))
+                .doOnNext(System.out::println);
+
+        StepVerifier.create(flux)
+                .expectNextCount(21)
                 .verifyComplete();
     }
 

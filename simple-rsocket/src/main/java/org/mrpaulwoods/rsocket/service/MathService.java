@@ -2,9 +2,11 @@ package org.mrpaulwoods.rsocket.service;
 
 import io.rsocket.Payload;
 import io.rsocket.RSocket;
+import org.mrpaulwoods.rsocket.dto.ChartResponseDto;
 import org.mrpaulwoods.rsocket.dto.RequestDto;
 import org.mrpaulwoods.rsocket.dto.ResponseDto;
 import org.mrpaulwoods.rsocket.util.ObjectUtil;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -38,4 +40,14 @@ public class MathService implements RSocket {
                 .doFinally(s -> System.out.println(s))
                 .map(ObjectUtil::toPayload);
     }
+
+    @Override
+    public Flux<Payload> requestChannel(Publisher<Payload> payloads) {
+        return Flux.from(payloads)
+                .map(p -> ObjectUtil.toObject(p, RequestDto.class))
+                .map(RequestDto::getInput)
+                .map(i -> new ChartResponseDto(i, i * i + 1))
+                .map(ObjectUtil::toPayload);
+    }
+
 }
