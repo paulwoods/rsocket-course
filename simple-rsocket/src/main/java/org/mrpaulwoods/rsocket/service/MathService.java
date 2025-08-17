@@ -37,7 +37,7 @@ public class MathService implements RSocket {
                 .map(i -> new ResponseDto(requestDto.getInput(), i))
                 .delayElements(Duration.ofSeconds(1))
                 .doOnNext(System.out::println)
-                .doFinally(s -> System.out.println(s))
+                .doFinally(System.out::println)
                 .map(ObjectUtil::toPayload);
     }
 

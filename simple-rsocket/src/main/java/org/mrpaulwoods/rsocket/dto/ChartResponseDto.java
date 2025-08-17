@@ -2,21 +2,20 @@ package org.mrpaulwoods.rsocket.dto;
 
 public class ChartResponseDto {
 
-    private int input;
-    private int output;
+    private final int input;
+    private final int output;
 
     public ChartResponseDto(int input, int output) {
         this.input = input;
         this.output = output;
     }
 
-    public ChartResponseDto() {
-    }
-
+    @SuppressWarnings("unused")
     public int getInput() {
         return input;
     }
 
+    @SuppressWarnings("unused")
     public int getOutput() {
         return output;
     }
