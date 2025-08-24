@@ -12,7 +12,7 @@ public class Server {
         CloseableChannel closeableChannel = rSocketServer.bindNow(TcpServerTransport.create(6565));
 
 
-        // keep listening until exit signal
+        // keep listening until the exit signal
         closeableChannel.onClose().block();
     }
 
