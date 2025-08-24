@@ -1,5 +1,7 @@
 package org.mrpaulwoods.springrsocket.dto;
 
+import lombok.NonNull;
+
 public record ChartResponseDto(int input, int output) {
 
     @Override
@@ -15,6 +17,7 @@ public record ChartResponseDto(int input, int output) {
     }
 
     @Override
+    @NonNull
     public String toString() {
         String graphFormat = getFormat(this.output);
         return String.format(graphFormat, this.input, "X");
